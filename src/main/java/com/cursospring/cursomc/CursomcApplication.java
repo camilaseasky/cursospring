@@ -13,6 +13,7 @@ import com.cursospring.cursomc.domain.Cidade;
 import com.cursospring.cursomc.domain.Cliente;
 import com.cursospring.cursomc.domain.Endereco;
 import com.cursospring.cursomc.domain.Estado;
+import com.cursospring.cursomc.domain.ItemPedido;
 import com.cursospring.cursomc.domain.Pagamento;
 import com.cursospring.cursomc.domain.PagamentoComBoleto;
 import com.cursospring.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.cursospring.cursomc.repositories.CidadeRepository;
 import com.cursospring.cursomc.repositories.ClienteRepository;
 import com.cursospring.cursomc.repositories.EnderecoRepository;
 import com.cursospring.cursomc.repositories.EstadoRepository;
+import com.cursospring.cursomc.repositories.ItemPedidoRepository;
 import com.cursospring.cursomc.repositories.PagamentoRepository;
 import com.cursospring.cursomc.repositories.PedidoRepository;
 import com.cursospring.cursomc.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class CursomcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -120,6 +125,21 @@ public class CursomcApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido itemPed1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido itemPed2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		
+		ItemPedido itemPed3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItems().addAll(Arrays.asList(itemPed1, itemPed2));
+		ped2.getItems().addAll(Arrays.asList(itemPed3));
+		
+		p1.getItems().addAll(Arrays.asList(itemPed1));
+		p2.getItems().addAll(Arrays.asList(itemPed3));
+		p3.getItems().addAll(Arrays.asList(itemPed2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(itemPed1, itemPed2, itemPed3));
+		
 	}
 
 }
